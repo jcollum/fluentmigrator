@@ -43,6 +43,6 @@ namespace FluentMigrator
 			TypeIsVersionTableMetaData = DefaultMigrationConventions.TypeIsVersionTableMetaData;
 			GetMetadataForMigration = DefaultMigrationConventions.GetMetadataForMigration;
 			GetWorkingDirectory = DefaultMigrationConventions.GetWorkingDirectory;
-		}
-	}
+		}     
+    }
 }

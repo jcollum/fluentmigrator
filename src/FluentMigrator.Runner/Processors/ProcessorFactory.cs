@@ -24,8 +24,11 @@ namespace FluentMigrator.Runner.Processors
 
 		public static string ListAvailableProcessorTypes()
 		{
-			IEnumerable<Type> processorTypes = typeof(IMigrationProcessorFactory).Assembly.GetExportedTypes()
-				.Where(t => typeof(IMigrationProcessorFactory).IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface);
+            var friendlyName = "ProcessorFactory";
+            Type procFact = typeof(IMigrationProcessorFactory);
+
+            IEnumerable<Type> processorTypes = procFact.Assembly.GetExportedTypes()
+                .Where(t => procFact.IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface);
 
 			string processorList = string.Empty;
 			foreach (Type processorType in processorTypes.OrderBy(x => x.Name))
@@ -34,11 +37,19 @@ namespace FluentMigrator.Runner.Processors
 
 				if (!string.IsNullOrEmpty(processorList))
 					processorList = processorList + ", ";
-				processorList += name.Substring(0, name.IndexOf("ProcessorFactory")).ToLowerInvariant();
+				processorList += name.Substring(0, name.IndexOf(friendlyName)).ToLowerInvariant();
 			}
 
 			return processorList;
 		}
+
+        public static string ListAvailableVcsTypes()
+        { 
+         //    ISourceControl       
+            return ""; 
+        }
+
+
 
 		private static object factoriesLock = new object();
 		private static List<IMigrationProcessorFactory> factories;

@@ -29,6 +29,7 @@ namespace FluentMigrator.Infrastructure
 		public virtual ICollection<IMigrationExpression> Expressions { get; set; }
 		public virtual IQuerySchema QuerySchema { get; set; }
         public virtual Assembly MigrationAssembly { get; set; }
+        public ISourceControl SourceControl { get; set; }
 
 		public MigrationContext(IMigrationConventions conventions, IQuerySchema querySchema, Assembly migrationAssembly)
 		{
@@ -36,6 +37,6 @@ namespace FluentMigrator.Infrastructure
 			Expressions = new List<IMigrationExpression>();
 			QuerySchema = querySchema;
             MigrationAssembly = migrationAssembly;
-		}
-	}
+		}              
+    }
 }

@@ -29,6 +29,7 @@ namespace FluentMigrator.Runner.Processors
 		protected readonly IMigrationGenerator Generator;
 		protected readonly IAnnouncer Announcer;
 		public IMigrationProcessorOptions Options { get; private set; }
+        public ISourceControl SourceControl { get; set; }
 
 		protected ProcessorBase(IMigrationGenerator generator, IAnnouncer announcer, IMigrationProcessorOptions options)
 		{

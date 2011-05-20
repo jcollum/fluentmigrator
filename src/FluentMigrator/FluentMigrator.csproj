@@ -105,6 +105,9 @@
     <AssemblyOriginatorKeyFile>..\FluentMigrator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SharpSvn">
+      <HintPath>..\..\lib\SharpSvn.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -180,6 +183,7 @@
     <Compile Include="Builders\Insert\InsertExpressionRoot.cs" />
     <Compile Include="Expressions\UpdateDataExpression.cs" />
     <Compile Include="ForwardOnlyMigration.cs" />
+    <Compile Include="ISourceControl.cs" />
     <Compile Include="Model\DeletionDataDefinition.cs" />
     <Compile Include="Model\InsertionDataDefinition.cs" />
     <Compile Include="Builders\Rename\Column\IRenameColumnToSyntax.cs" />
@@ -205,6 +209,7 @@
     <Compile Include="IQuerySchema.cs" />
     <Compile Include="Model\TableDefinition.cs" />
     <Compile Include="ProfileAttribute.cs" />
+    <Compile Include="SourceControl\Svn.cs" />
     <Compile Include="SystemMethods.cs" />
     <Compile Include="VersionTableInfo\DefaultVersionTableMetaData.cs" />
     <Compile Include="VersionTableInfo\IVersionTableMetaData.cs" />

@@ -28,5 +28,6 @@ namespace FluentMigrator.Builders.Execute
 		void Script(string pathToSqlScript);		
 		void WithConnection(Action<IDbConnection, IDbTransaction> operation);
         void EmbeddedScript(string EmbeddedSqlScriptName);
+        void ScriptFromSource(string pathToSqlScript, int revision); 
 	}
 }

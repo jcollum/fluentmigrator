@@ -23,11 +23,12 @@ using System.Reflection;
 
 namespace FluentMigrator.Infrastructure
 {
-	public interface IMigrationContext
-	{
-		IMigrationConventions Conventions { get; }
-		ICollection<IMigrationExpression> Expressions { get; set; }
-		IQuerySchema QuerySchema { get; }
+    public interface IMigrationContext
+    {
+        IMigrationConventions Conventions { get; }
+        ICollection<IMigrationExpression> Expressions { get; set; }
+        IQuerySchema QuerySchema { get; }
         Assembly MigrationAssembly { get; set; }
-	}
+        ISourceControl SourceControl { get; set; }
+    }
 }

@@ -29,5 +29,5 @@ namespace FluentMigrator
 		Func<Type, bool> TypeIsProfile { get; set; }
 		Func<Type, bool> TypeIsVersionTableMetaData { get; set; }
 		Func<string> GetWorkingDirectory { get; set; }
-	}
+    }
 }

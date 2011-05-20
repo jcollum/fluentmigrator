@@ -21,58 +21,70 @@ using System.Collections.Generic;
 using System.Data;
 using FluentMigrator.Expressions;
 using FluentMigrator.Infrastructure;
+using System.IO;
+using SharpSvn;
 
 namespace FluentMigrator.Builders.Execute
 {
-	public class ExecuteExpressionRoot : IExecuteExpressionRoot
-	{
-		private readonly IMigrationContext _context;
+    public class ExecuteExpressionRoot : IExecuteExpressionRoot
+    {
+        private readonly IMigrationContext _context;
 
-		public ExecuteExpressionRoot(IMigrationContext context)
-		{
-			_context = context;
-		}
+        public ExecuteExpressionRoot(IMigrationContext context)
+        {
+            _context = context;
+        }
 
-		public void Sql(string sqlStatement)
-		{
-			var expression = new ExecuteSqlStatementExpression { SqlStatement = sqlStatement };
-			_context.Expressions.Add(expression);
-		}
+        public void Sql(string sqlStatement)
+        {
+            var expression = new ExecuteSqlStatementExpression { SqlStatement = sqlStatement };
+            _context.Expressions.Add(expression);
+        }
 
-		public void Script(string pathToSqlScript)
-		{
-			var expression = new ExecuteSqlScriptExpression { SqlScript = pathToSqlScript };
-			_context.Expressions.Add(expression);
-		}
+        public void Script(string pathToSqlScript)
+        {
+            var expression = new ExecuteSqlScriptExpression { SqlScript = pathToSqlScript };
+            _context.Expressions.Add(expression);
+        }
 
-		public void WithConnection(Action<IDbConnection, IDbTransaction> operation)
-		{
-			var expression = new PerformDBOperationExpression { Operation = operation };
-			_context.Expressions.Add(expression);
-		}
+        public void ScriptFromSource(string pathToSqlScript, int revision)
+        {
+            ISourceControl sc = null;
+            if (_context.SourceControl == null) throw new NullReferenceException("No source control object found.");
+            else sc = _context.SourceControl;
+            var expression = new ExecuteSqlStatementExpression();
+            expression.SqlStatement = sc.GetTextFile(pathToSqlScript, revision);
+            _context.Expressions.Add(expression);
+        }
+
+        public void WithConnection(Action<IDbConnection, IDbTransaction> operation)
+        {
+            var expression = new PerformDBOperationExpression { Operation = operation };
+            _context.Expressions.Add(expression);
+        }
 
         public void EmbeddedScript(string EmbeddedSqlScriptName)
         {
-           
+
             var expression = new ExecuteEmbeddedSqlScriptExpression { SqlScript = EmbeddedSqlScriptName, MigrationAssembly = _context.MigrationAssembly };
-            
+
             _context.Expressions.Add(expression);
         }
-	}
+    }
 
-	public class PerformDBOperationExpression : MigrationExpressionBase
-	{
-		public override void ExecuteWith(IMigrationProcessor processor)
-		{
-			processor.Process(this);
-		}
+    public class PerformDBOperationExpression : MigrationExpressionBase
+    {
+        public override void ExecuteWith(IMigrationProcessor processor)
+        {
+            processor.Process(this);
+        }
 
-		public override void CollectValidationErrors(ICollection<string> errors)
-		{
-			if (Operation == null)
-				errors.Add(ErrorMessages.OperationCannotBeNull);
-		}
+        public override void CollectValidationErrors(ICollection<string> errors)
+        {
+            if (Operation == null)
+                errors.Add(ErrorMessages.OperationCannotBeNull);
+        }
 
-		public Action<IDbConnection, IDbTransaction> Operation { get; set; }
-	}
+        public Action<IDbConnection, IDbTransaction> Operation { get; set; }
+    }
 }

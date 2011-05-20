@@ -29,78 +29,79 @@ using FluentMigrator.Builders.Update;
 
 namespace FluentMigrator
 {
-	public abstract class Migration : IMigration
-	{
-		private IMigrationContext _context;
-		private readonly object _mutex = new object();
+    public abstract class Migration : IMigration
+    {
+        private IMigrationContext _context;
 
-		public abstract void Up();
-		public abstract void Down();
+        private readonly object _mutex = new object();
 
-		public void ApplyConventions(IMigrationContext context)
-		{
-			foreach (var expression in context.Expressions)
-				expression.ApplyConventions( context.Conventions );
-		}
+        public abstract void Up();
+        public abstract void Down();
 
-		public virtual void GetUpExpressions(IMigrationContext context)
-		{
-			lock (_mutex)
-			{
-				_context = context;
-				Up();
-				_context = null;
-			}
-		}
+        public void ApplyConventions(IMigrationContext context)
+        {
+            foreach (var expression in context.Expressions)
+                expression.ApplyConventions(context.Conventions);
+        }
 
-		public virtual void GetDownExpressions(IMigrationContext context)
-		{
-			lock (_mutex)
-			{
-				_context = context;
-				Down();
-				_context = null;
-			}
-		}
+        public virtual void GetUpExpressions(IMigrationContext context)
+        {
+            lock (_mutex)
+            {
+                _context = context;
+                Up();
+                _context = null;
+            }
+        }
 
-		public IAlterExpressionRoot Alter
-		{
-			get { return new AlterExpressionRoot(_context);}
-		}
+        public virtual void GetDownExpressions(IMigrationContext context)
+        {
+            lock (_mutex)
+            {
+                _context = context;
+                Down();
+                _context = null;
+            }
+        }
 
-		public ICreateExpressionRoot Create
-		{
-			get { return new CreateExpressionRoot(_context); }
-		}
+        public IAlterExpressionRoot Alter
+        {
+            get { return new AlterExpressionRoot(_context); }
+        }
 
-		public IDeleteExpressionRoot Delete
-		{
-			get { return new DeleteExpressionRoot(_context); }
-		}
+        public ICreateExpressionRoot Create
+        {
+            get { return new CreateExpressionRoot(_context); }
+        }
 
-		public IRenameExpressionRoot Rename
-		{
-			get { return new RenameExpressionRoot(_context); }
-		}
+        public IDeleteExpressionRoot Delete
+        {
+            get { return new DeleteExpressionRoot(_context); }
+        }
 
-		public IInsertExpressionRoot Insert
-		{
-			get { return new InsertExpressionRoot(_context); }
-		}
+        public IRenameExpressionRoot Rename
+        {
+            get { return new RenameExpressionRoot(_context); }
+        }
 
-		public IExecuteExpressionRoot Execute
-		{
-			get { return new ExecuteExpressionRoot(_context);}
-		}
+        public IInsertExpressionRoot Insert
+        {
+            get { return new InsertExpressionRoot(_context); }
+        }
 
-		public ISchemaExpressionRoot Schema
-		{
-			get { return new SchemaExpressionRoot(_context); }
-		}
+        public IExecuteExpressionRoot Execute
+        {
+            get { return new ExecuteExpressionRoot(_context); }
+        }
 
-	    public IUpdateExpressionRoot Update
-	    {
-	        get { return new UpdateExpressionRoot(_context);}
-	    }
-	}
+        public ISchemaExpressionRoot Schema
+        {
+            get { return new SchemaExpressionRoot(_context); }
+        }
+
+        public IUpdateExpressionRoot Update
+        {
+            get { return new UpdateExpressionRoot(_context); }
+        }       
+    }
 }
